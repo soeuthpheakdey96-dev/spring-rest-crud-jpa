@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.learning.dev.spring.myfirstapp.entity.Coustomer;
-
 import com.learning.dev.spring.myfirstapp.service.CoustomerService;
-
 import tools.jackson.databind.json.JsonMapper;
 
 @RestController
@@ -43,7 +40,7 @@ public class CoustomerResController {
 	@GetMapping("customers/{id}")
 	public Coustomer GetCustomerById(@PathVariable int id) {
 		Coustomer theCoustomer = coustomerService.findById(id);
-
+	
 	        if (theCoustomer == null) {
 	            throw new RuntimeException("Coustomer id not found - " + id);
 	        }
@@ -65,40 +62,40 @@ public class CoustomerResController {
 	    }
 	 
 	 @PutMapping("/customers/{id}")
-	 public Coustomer updateAll(@PathVariable int id,
-	                           @RequestBody Coustomer customer) {
+	 public Coustomer updateAll(@PathVariable int id, @RequestBody Coustomer customer) {
+	                           
 	     customer.setId(id);
 	     return coustomerService.save(customer);
 	 }
 	 @PatchMapping("/customers/{id}")
 	    public Coustomer updateCoustomer(@PathVariable int id, 
 	    		@RequestBody Map<String, Object> patchPayLoad) {
-		 
-		 Coustomer tempEmp = coustomerService.findById(id);
-		 
-		 if (tempEmp == null) {
-			  
-		    throw new RuntimeException("Coustomer id not found - " + id);
-		 }
-		    if(patchPayLoad.containsKey("id")) {
-		  	  
-		  	  throw new RuntimeException("Coustomer id cannot be modified. Remove 'id' from request body.");
-		    }
-		    
-		  	Coustomer pathedEmp  = jsonMapper.updateValue(tempEmp, patchPayLoad);
-		  	
-		  	Coustomer dbCoustomer = coustomerService.save(pathedEmp);
-		  	
-					return dbCoustomer;
+	 	 
+	 	 Coustomer tempEmp = coustomerService.findById(id);
+	 	 
+	 	 if (tempEmp == null) {
+	 		  
+	 	    throw new RuntimeException("Coustomer id not found - " + id);
+	 	 }
+	 	    if(patchPayLoad.containsKey("id")) {
+	 	  	  
+	 	  	  throw new RuntimeException("Coustomer id cannot be modified. Remove 'id' from request body.");
+	 	    }
+	 	    
+	 	  	Coustomer pathedEmp  = jsonMapper.updateValue(tempEmp, patchPayLoad);
+	 	  	
+	 	  	Coustomer dbCoustomer = coustomerService.save(pathedEmp);
+	 	  	
+	 				return dbCoustomer;
 	 }
 	  
 	 @PostMapping("/customers")
 	    public Coustomer save(@RequestBody Coustomer theEmp) {
 	    	
-		 theEmp.setId(0);
-		 Coustomer resEmp = coustomerService.save(theEmp);
-		 
-	    	return resEmp;
+	 	 theEmp.setId(0);
+	 	 Coustomer resEmp = coustomerService.save(theEmp);
+	 	 
+	     	return resEmp;
 	    }
 
 }
